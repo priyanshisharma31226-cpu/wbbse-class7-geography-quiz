@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <meta name="description" content="Interactive MCQ Quiz App for WBBSE Class 7 Geography students." />
+  <title>WBBSE Class 7 Geography Quiz</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated Background Shapes -->
+  <div class="bg-animation" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="floating-icon fi-1">🌍</div>
+    <div class="floating-icon fi-2">🧭</div>
+    <div class="floating-icon fi-3">⛰️</div>
+    <div class="floating-icon fi-4">🌊</div>
+  </div>
+
+  <div class="app-shell">
+    <!-- Top App Header -->
+    <header class="app-header" id="app-header">
+      <button class="icon-btn hidden" id="nav-back-btn" aria-label="Go Back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="header-title-wrap" id="header-title-wrap">
+        <span class="header-badge">WBBSE • CLASS 7</span>
+        <h1 class="header-title" id="header-title">Geography Quiz</h1>
+      </div>
+      <button class="icon-btn" id="install-pwa-btn" title="Install App" style="display: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </header>
+
+    <!-- ==================== 1. HOME SCREEN ==================== -->
+    <main id="screen-home" class="screen active">
+      <div class="hero-card">
+        <div class="logo-emblem">
+          <svg viewBox="0 0 120 120" class="globe-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#38bdf8" />
+                <stop offset="100%" stop-color="#1d4ed8" />
+              </linearGradient>
+              <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4ade80" />
+                <stop offset="100%" stop-color="#15803d" />
+              </linearGradient>
+            </defs>
+            <!-- Orbit Ring -->
+            <ellipse cx="60" cy="60" rx="54" ry="20" transform="rotate(-24 60 60)" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-dasharray="6 4" />
+            <!-- Globe Base -->
+            <circle cx="60" cy="60" r="38" fill="url(#oceanGrad)" stroke="#ffffff" stroke-width="3" />
+            <!-- Continents -->
+            <path d="M40 36 C48 32, 58 35, 62 44 C65 50, 56 56, 52 62 C48 68, 53 78, 46 82 C38 78, 33 65, 35 52 C36 45, 36 39, 40 36 Z" fill="url(#landGrad)" />
+            <path d="M68 34 C76 36, 85 44, 86 55 C87 63, 79 70, 73 67 C68 64, 70 53, 66 47 C63 42, 63 33, 68 34 Z" fill="url(#landGrad)" />
+            <!-- Latitude/Longitude Lines -->
+            <path d="M22 60 Q60 72 98 60" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+            <path d="M60 22 Q46 60 60 98" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+            <!-- Location Pin -->
+            <path d="M77 25 C71 25, 67 29, 67 35 C67 42, 77 52, 77 52 C77 52, 87 42, 87 35 C87 29, 83 25, 77 25 Z" fill="#f43f5e" stroke="#ffffff" stroke-width="2" />
+            <circle cx="77" cy="34" r="3.5" fill="#ffffff" />
+          </svg>
+        </div>
+        <div class="hero-tag">Official WBBSE Syllabus • 210+ MCQs</div>
+        <h2 class="app-main-title">WBBSE Class 7 Geography Quiz</h2>
+        <p class="app-subtitle">Explore the Earth, Landforms, Rivers, Atmosphere &amp; Continents through interactive quizzes!</p>
+
+        <button class="btn-primary-hero" id="btn-start-quick">
+          <span class="btn-icon">🚀</span>
+          <span>Start Quick Quiz</span>
+        </button>
+      </div>
+
+      <!-- Quick Stats Strip -->
+      <div class="stats-strip">
+        <div class="stat-pill">
+          <span class="stat-val" id="home-total-played">0</span>
+          <span class="stat-lbl">Quizzes</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-val" id="home-avg-accuracy">0%</span>
+          <span class="stat-lbl">Accuracy</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-val" id="home-daily-streak">0 🔥</span>
+          <span class="stat-lbl">Streak</span>
+        </div>
+      </div>
+
+      <!-- Menu Grid -->
+      <div class="menu-grid">
+        <button class="menu-card card-chapters" id="btn-chapters">
+          <div class="menu-card-icon">📚</div>
+          <div class="menu-card-text">
+            <h3>Chapter-wise Practice</h3>
+            <p>All 11 WBBSE textbook chapters</p>
+          </div>
+          <span class="menu-arrow">→</span>
+        </button>
+
+        <button class="menu-card card-mock" id="btn-mock-test">
+          <div class="menu-card-icon">⏱️</div>
+          <div class="menu-card-text">
+            <h3>Mock Test</h3>
+            <p>30 mixed questions • Exam mode</p>
+          </div>
+          <span class="menu-arrow">→</span>
+        </button>
+
+        <button class="menu-card card-daily" id="btn-daily-challenge">
+          <div class="menu-card-icon">🌟</div>
+          <div class="menu-card-text">
+            <h3>Daily Challenge</h3>
+            <p id="daily-status-text">10 fresh questions today</p>
+          </div>
+          <span class="menu-arrow">→</span>
+        </button>
+
+        <button class="menu-card card-progress" id="btn-my-progress">
+          <div class="menu-card-icon">🏆</div>
+          <div class="menu-card-text">
+            <h3>My Progress</h3>
+            <p>Best scores &amp; chapter mastery</p>
+          </div>
+          <span class="menu-arrow">→</span>
+        </button>
+
+        <button class="menu-card card-about full-span" id="btn-about-app">
+          <div class="menu-card-icon">ℹ️</div>
+          <div class="menu-card-text">
+            <h3>About App &amp; Syllabus</h3>
+            <p>WBBSE Class 7 Geography guide &amp; offline info</p>
+          </div>
+          <span class="menu-arrow">→</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ==================== 2. CHAPTER SELECTION SCREEN ==================== -->
+    <main id="screen-chapters" class="screen">
+      <div class="section-banner banner-chapters">
+        <h2>Select a Chapter</h2>
+        <p>Based on WBBSE Class 7 Textbook (<em>Amader Prithibi</em>)</p>
+      </div>
+      <div class="chapters-list" id="chapters-container">
+        <!-- Populated dynamically by script.js -->
+      </div>
+    </main>
+
+    <!-- ==================== 3. QUIZ SCREEN ==================== -->
+    <main id="screen-quiz" class="screen">
+      <!-- Quiz Top Meta Bar -->
+      <div class="quiz-meta-bar">
+        <div class="quiz-badge-group">
+          <span class="quiz-mode-pill" id="quiz-mode-label">Chapter 1</span>
+          <span class="quiz-counter" id="quiz-question-counter">Q 1 / 15</span>
+        </div>
+        <div class="quiz-timer" id="quiz-timer">
+          <span>⏱️</span>
+          <span id="timer-display">00:00</span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-track">
+        <div class="progress-fill" id="quiz-progress-bar" style="width: 0%;"></div>
+      </div>
+
+      <!-- Dynamic Colorful Question Card -->
+      <div class="question-card theme-0" id="question-card">
+        <div class="question-card-header">
+          <span class="q-chip" id="q-chapter-tag">The Earth's Revolution</span>
+          <span class="q-status-badge" id="q-answered-badge">Unanswered</span>
+        </div>
+        <h2 class="question-text" id="question-text">Loading question...</h2>
+      </div>
+
+      <!-- Options List (A, B, C, D) -->
+      <div class="options-container" id="options-container">
+        <!-- Buttons injected dynamically -->
+      </div>
+
+      <!-- Immediate Feedback & Explanation Box -->
+      <div class="explanation-card hidden" id="explanation-card">
+        <div class="exp-header" id="exp-header">
+          <span class="exp-icon" id="exp-icon">✅</span>
+          <span class="exp-title" id="exp-title">Correct Answer!</span>
+        </div>
+        <p class="exp-text" id="exp-text"></p>
+      </div>
+
+      <!-- Quiz Bottom Navigation -->
+      <div class="quiz-nav-footer">
+        <button class="btn-nav btn-prev" id="btn-prev-q">
+          ← Previous
+        </button>
+        <button class="btn-nav btn-next" id="btn-next-q">
+          Next Question →
+        </button>
+      </div>
+    </main>
+
+    <!-- ==================== 4. RESULTS SCREEN ==================== -->
+    <main id="screen-results" class="screen">
+      <div class="result-hero-card">
+        <div class="stars-display" id="result-stars">⭐⭐⭐</div>
+        <h2 class="result-heading" id="result-title">Outstanding Work!</h2>
+        <p class="result-subtitle" id="result-motivation">You have mastered this Geography topic!</p>
+
+        <!-- Circular Percentage Score -->
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-progress" id="result-ring-circle" cx="60" cy="60" r="50" />
+          </svg>
+          <div class="score-ring-text">
+            <span class="score-percent" id="result-percentage">0%</span>
+            <span class="score-label">Score</span>
+          </div>
+        </div>
+
+        <!-- 4 Metric Boxes -->
+        <div class="result-metrics-grid">
+          <div class="metric-box metric-total">
+            <span class="m-icon">📋</span>
+            <span class="m-val" id="res-total">0</span>
+            <span class="m-lbl">Total Questions</span>
+          </div>
+          <div class="metric-box metric-correct">
+            <span class="m-icon">✅</span>
+            <span class="m-val" id="res-correct">0</span>
+            <span class="m-lbl">Correct Answers</span>
+          </div>
+          <div class="metric-box metric-wrong">
+            <span class="m-icon">❌</span>
+            <span class="m-val" id="res-wrong">0</span>
+            <span class="m-lbl">Wrong Answers</span>
+          </div>
+          <div class="metric-box metric-time">
+            <span class="m-icon">⏱️</span>
+            <span class="m-val" id="res-time">00:00</span>
+            <span class="m-lbl">Time Taken</span>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn-action btn-retry" id="btn-retry-quiz">
+            🔄 Retry Quiz
+          </button>
+          <button class="btn-action btn-home" id="btn-result-home">
+            🏠 Back to Home
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================== 5. MY PROGRESS SCREEN ==================== -->
+    <main id="screen-progress" class="screen">
+      <div class="section-banner banner-progress">
+        <h2>My Learning Progress</h2>
+        <p>Track your scores across all 11 WBBSE Geography chapters</p>
+      </div>
+
+      <div class="overall-progress-card">
+        <div class="op-row">
+          <div>
+            <span class="op-label">Total Questions Answered</span>
+            <h3 class="op-big" id="prog-total-answered">0</h3>
+          </div>
+          <div>
+            <span class="op-label">Mock Test Best</span>
+            <h3 class="op-big" id="prog-mock-best">N/A</h3>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-section-title">Chapter-wise Best Scores</h3>
+      <div class="progress-chapters-list" id="progress-chapters-list">
+        <!-- Populated dynamically -->
+      </div>
+
+      <button class="btn-danger-outline" id="btn-reset-progress">
+        🗑️ Reset All Saved Progress
+      </button>
+    </main>
+
+    <!-- ==================== 6. ABOUT APP SCREEN ==================== -->
+    <main id="screen-about" class="screen">
+      <div class="about-card">
+        <div class="about-badge">WBBSE Educational App</div>
+        <h2>About WBBSE Class 7 Geography Quiz</h2>
+        <p>
+          This interactive quiz application is crafted specifically for <strong>Class 7 students of the West Bengal Board of Secondary Education (WBBSE)</strong> studying Geography in English medium.
+        </p>
+
+        <div class="about-feature-box">
+          <h4>📖 Syllabus Coverage (11 Chapters)</h4>
+          <ul class="syllabus-list">
+            <li>1. The Earth's Revolution</li>
+            <li>2. Determination of Location of a Place on the Earth's Surface</li>
+            <li>3. Air Pressure</li>
+            <li>4. Landforms</li>
+            <li>5. River</li>
+            <li>6. Rocks and Soil</li>
+            <li>7. Water Pollution</li>
+            <li>8. Soil Pollution</li>
+            <li>9. Continent of Asia</li>
+            <li>10. Continent of Africa</li>
+            <li>11. Continent of Europe</li>
+          </ul>
+        </div>
+
+        <div class="about-feature-box">
+          <h4>✨ Key App Features</h4>
+          <p>• 210+ original syllabus-aligned MCQs with clear explanations.<br>
+             • Chapter-wise practice, 30-question Mock Tests, and Daily Challenges.<br>
+             • Works 100% offline once installed on Android or Desktop.<br>
+             • Automatic progress tracking stored locally on your device.</p>
+        </div>
+
+        <button class="btn-primary-hero" id="btn-about-home" style="margin-top: 16px;">
+          🏠 Back to Home Screen
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
