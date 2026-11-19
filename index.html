@@ -1,338 +1,533 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1e3a8a" />
-  <meta name="description" content="Interactive MCQ Quiz App for WBBSE Class 7 Geography students." />
-  <title>WBBSE Class 7 Geography Quiz</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172554">
+<title>Geography Explorer - Class 7</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5ff;color:#172554}
+header{background:linear-gradient(135deg,#172554,#2563eb,#06b6d4);color:white;padding:25px 16px 35px;text-align:center;border-radius:0 0 28px 28px}
+header h1{font-size:27px;margin:5px}
+header p{margin:8px 0;color:#dbeafe}
+.container{max-width:700px;margin:auto;padding:17px}
+.hero{background:linear-gradient(135deg,#7c3aed,#2563eb);color:white;padding:22px;border-radius:22px;margin-top:-10px;box-shadow:0 8px 20px #64748b35}
+.hero h2{margin:0 0 8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}
+.stat{background:white;padding:14px 5px;text-align:center;border-radius:15px;box-shadow:0 3px 10px #0000000c}
+.stat b{display:block;font-size:23px;color:#4f46e5}
+.stat small{color:#64748b}
+.section-title{font-size:20px;margin:22px 0 13px}
+.chapters{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.chapter{border:0;border-radius:17px;padding:16px 12px;text-align:left;min-height:112px;color:white;cursor:pointer;box-shadow:0 5px 12px #00000015;transition:.2s}
+.chapter:active{transform:scale(.96)}
+.chapter strong{display:block;font-size:15px;margin:7px 0}
+.chapter small{opacity:.9}
+.c1{background:linear-gradient(135deg,#2563eb,#38bdf8)}
+.c2{background:linear-gradient(135deg,#7c3aed,#c084fc)}
+.c3{background:linear-gradient(135deg,#0891b2,#22d3ee)}
+.c4{background:linear-gradient(135deg,#ea580c,#fbbf24)}
+.c5{background:linear-gradient(135deg,#059669,#34d399)}
+.c6{background:linear-gradient(135deg,#475569,#94a3b8)}
+.c7{background:linear-gradient(135deg,#dc2626,#fb7185)}
+.c8{background:linear-gradient(135deg,#a21caf,#e879f9)}
+.c9{background:linear-gradient(135deg,#1d4ed8,#818cf8)}
+.c10{background:linear-gradient(135deg,#15803d,#84cc16)}
+.c11{background:linear-gradient(135deg,#be123c,#fb7185)}
+.screen{display:none}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.back{border:0;background:white;padding:11px 15px;border-radius:12px;color:#334155;font-weight:bold;cursor:pointer}
+.quiz-card{background:white;border-radius:22px;padding:20px;box-shadow:0 5px 18px #00000010}
+.chapter-name{color:#6366f1;font-weight:bold;font-size:14px}
+.progress{height:9px;background:#e2e8f0;border-radius:20px;margin:15px 0;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#06b6d4);transition:.3s}
+.qnumber{color:#64748b;font-size:13px;font-weight:bold}
+.question{font-size:21px;line-height:1.45;margin:16px 0 21px;color:#172554}
+.option{display:block;width:100%;border:2px solid #e2e8f0;background:#f8fafc;padding:15px;margin:10px 0;border-radius:14px;text-align:left;font-size:16px;color:#334155;cursor:pointer;transition:.2s}
+.option:hover{border-color:#818cf8;background:#eef2ff}
+.option.correct{background:#dcfce7;border-color:#16a34a;color:#166534}
+.option.wrong{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.option:disabled{cursor:default}
+.feedback{display:none;padding:14px;border-radius:13px;margin-top:15px;line-height:1.5}
+.feedback.good{display:block;background:#dcfce7;color:#166534}
+.feedback.bad{display:block;background:#fee2e2;color:#991b1b}
+.explanation{font-size:14px;margin-top:6px}
+.primary{width:100%;padding:15px;border:0;border-radius:14px;background:linear-gradient(135deg,#4f46e5,#2563eb);color:white;font-size:17px;font-weight:bold;margin-top:18px;cursor:pointer}
+.secondary{background:#0f766e}
+.result{text-align:center;background:white;border-radius:22px;padding:27px 20px;box-shadow:0 5px 18px #00000010}
+.score-circle{height:130px;width:130px;border-radius:50%;margin:20px auto;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;color:white;font-size:32px;font-weight:bold}
+footer{text-align:center;color:#94a3b8;font-size:12px;padding:25px 5px}
+@media(max-width:380px){.chapters{gap:8px}.chapter{padding:12px 9px}.question{font-size:19px}}
+</style>
 </head>
 <body>
-  <!-- Animated Background Shapes -->
-  <div class="bg-animation" aria-hidden="true">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-    <div class="floating-icon fi-1">🌍</div>
-    <div class="floating-icon fi-2">🧭</div>
-    <div class="floating-icon fi-3">⛰️</div>
-    <div class="floating-icon fi-4">🌊</div>
-  </div>
 
-  <div class="app-shell">
-    <!-- Top App Header -->
-    <header class="app-header" id="app-header">
-      <button class="icon-btn hidden" id="nav-back-btn" aria-label="Go Back">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      </button>
-      <div class="header-title-wrap" id="header-title-wrap">
-        <span class="header-badge">WBBSE • CLASS 7</span>
-        <h1 class="header-title" id="header-title">Geography Quiz</h1>
-      </div>
-      <button class="icon-btn" id="install-pwa-btn" title="Install App" style="display: none;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </button>
-    </header>
+<header>
+<div style="font-size:38px">🌍</div>
+<h1>GEOGRAPHY EXPLORER</h1>
+<p>WBBSE Class 7 | Learn • Practice • Achieve</p>
+</header>
 
-    <!-- ==================== 1. HOME SCREEN ==================== -->
-    <main id="screen-home" class="screen active">
-      <div class="hero-card">
-        <div class="logo-emblem">
-          <svg viewBox="0 0 120 120" class="globe-svg" aria-hidden="true">
-            <defs>
-              <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#38bdf8" />
-                <stop offset="100%" stop-color="#1d4ed8" />
-              </linearGradient>
-              <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#4ade80" />
-                <stop offset="100%" stop-color="#15803d" />
-              </linearGradient>
-            </defs>
-            <!-- Orbit Ring -->
-            <ellipse cx="60" cy="60" rx="54" ry="20" transform="rotate(-24 60 60)" fill="none" stroke="#fbbf24" stroke-width="3.5" stroke-dasharray="6 4" />
-            <!-- Globe Base -->
-            <circle cx="60" cy="60" r="38" fill="url(#oceanGrad)" stroke="#ffffff" stroke-width="3" />
-            <!-- Continents -->
-            <path d="M40 36 C48 32, 58 35, 62 44 C65 50, 56 56, 52 62 C48 68, 53 78, 46 82 C38 78, 33 65, 35 52 C36 45, 36 39, 40 36 Z" fill="url(#landGrad)" />
-            <path d="M68 34 C76 36, 85 44, 86 55 C87 63, 79 70, 73 67 C68 64, 70 53, 66 47 C63 42, 63 33, 68 34 Z" fill="url(#landGrad)" />
-            <!-- Latitude/Longitude Lines -->
-            <path d="M22 60 Q60 72 98 60" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
-            <path d="M60 22 Q46 60 60 98" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
-            <!-- Location Pin -->
-            <path d="M77 25 C71 25, 67 29, 67 35 C67 42, 77 52, 77 52 C77 52, 87 42, 87 35 C87 29, 83 25, 77 25 Z" fill="#f43f5e" stroke="#ffffff" stroke-width="2" />
-            <circle cx="77" cy="34" r="3.5" fill="#ffffff" />
-          </svg>
-        </div>
-        <div class="hero-tag">Official WBBSE Syllabus • 210+ MCQs</div>
-        <h2 class="app-main-title">WBBSE Class 7 Geography Quiz</h2>
-        <p class="app-subtitle">Explore the Earth, Landforms, Rivers, Atmosphere &amp; Continents through interactive quizzes!</p>
+<div class="container">
 
-        <button class="btn-primary-hero" id="btn-start-quick">
-          <span class="btn-icon">🚀</span>
-          <span>Start Quick Quiz</span>
-        </button>
-      </div>
+<div id="home">
+<div class="hero">
+<h2>Explore Our Planet! 🌏</h2>
+<p>Improve your Geography knowledge with chapter-wise multiple choice questions.</p>
+<strong>📚 11 Chapters | 220 Questions</strong>
+</div>
 
-      <!-- Quick Stats Strip -->
-      <div class="stats-strip">
-        <div class="stat-pill">
-          <span class="stat-val" id="home-total-played">0</span>
-          <span class="stat-lbl">Quizzes</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-val" id="home-avg-accuracy">0%</span>
-          <span class="stat-lbl">Accuracy</span>
-        </div>
-        <div class="stat-pill">
-          <span class="stat-val" id="home-daily-streak">0 🔥</span>
-          <span class="stat-lbl">Streak</span>
-        </div>
-      </div>
+<div class="stats">
+<div class="stat"><b>11</b><small>Chapters</small></div>
+<div class="stat"><b>220</b><small>Questions</small></div>
+<div class="stat"><b>20</b><small>Per Chapter</small></div>
+</div>
 
-      <!-- Menu Grid -->
-      <div class="menu-grid">
-        <button class="menu-card card-chapters" id="btn-chapters">
-          <div class="menu-card-icon">📚</div>
-          <div class="menu-card-text">
-            <h3>Chapter-wise Practice</h3>
-            <p>All 11 WBBSE textbook chapters</p>
-          </div>
-          <span class="menu-arrow">→</span>
-        </button>
+<h2 class="section-title">📖 Select Your Chapter</h2>
+<div class="chapters" id="chapterList"></div>
+</div>
 
-        <button class="menu-card card-mock" id="btn-mock-test">
-          <div class="menu-card-icon">⏱️</div>
-          <div class="menu-card-text">
-            <h3>Mock Test</h3>
-            <p>30 mixed questions • Exam mode</p>
-          </div>
-          <span class="menu-arrow">→</span>
-        </button>
+<div id="quiz" class="screen">
+<div class="topline">
+<button class="back" onclick="goHome()">← Chapters</button>
+<span id="scoreDisplay">⭐ Score: 0</span>
+</div>
+<div class="quiz-card">
+<div class="chapter-name" id="chapterName"></div>
+<div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+<div class="qnumber" id="qnumber"></div>
+<div class="question" id="question"></div>
+<div id="options"></div>
+<div class="feedback" id="feedback">
+<strong id="feedbackTitle"></strong>
+<div class="explanation" id="explanation"></div>
+</div>
+<button class="primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+</div>
+</div>
 
-        <button class="menu-card card-daily" id="btn-daily-challenge">
-          <div class="menu-card-icon">🌟</div>
-          <div class="menu-card-text">
-            <h3>Daily Challenge</h3>
-            <p id="daily-status-text">10 fresh questions today</p>
-          </div>
-          <span class="menu-arrow">→</span>
-        </button>
+<div id="result" class="screen">
+<div class="result">
+<div style="font-size:50px">🏆</div>
+<h2>Quiz Completed!</h2>
+<p id="resultChapter"></p>
+<div class="score-circle" id="finalScore">0/20</div>
+<h2 id="resultMessage">Great Work!</h2>
+<p id="resultPercent"></p>
+<button class="primary" onclick="restartQuiz()">🔄 Try Again</button>
+<button class="primary secondary" onclick="goHome()">📚 Choose Another Chapter</button>
+</div>
+</div>
 
-        <button class="menu-card card-progress" id="btn-my-progress">
-          <div class="menu-card-icon">🏆</div>
-          <div class="menu-card-text">
-            <h3>My Progress</h3>
-            <p>Best scores &amp; chapter mastery</p>
-          </div>
-          <span class="menu-arrow">→</span>
-        </button>
+<footer>Geography Explorer | WBBSE Class 7 | Educational Practice App</footer>
+</div>
 
-        <button class="menu-card card-about full-span" id="btn-about-app">
-          <div class="menu-card-icon">ℹ️</div>
-          <div class="menu-card-text">
-            <h3>About App &amp; Syllabus</h3>
-            <p>WBBSE Class 7 Geography guide &amp; offline info</p>
-          </div>
-          <span class="menu-arrow">→</span>
-        </button>
-      </div>
-    </main>
+<script>
+// Each question: Question, four options, correct answer index, explanation.
+const chapters = [
+{
+name:"Earth's Revolution",icon:"🌍",color:"c1",
+q:[
+["What is revolution of the Earth?",["Movement around the Sun","Movement on its axis","Movement of the Moon","Movement of clouds"],0,"Revolution is the Earth's movement around the Sun."],
+["How long does the Earth take to complete one revolution?",["24 hours","365 days and about 6 hours","30 days","12 hours"],1,"One revolution takes approximately 365 days and 6 hours."],
+["What is the path of the Earth around the Sun called?",["Axis","Orbit","Equator","Latitude"],1,"The Earth follows an elliptical orbit around the Sun."],
+["Which planet is known as the Blue Planet?",["Mars","Venus","Earth","Jupiter"],2,"Earth appears blue because much of its surface is covered by water."],
+["What causes the seasons on Earth?",["Only rotation","Revolution and tilted axis","Rainfall","Ocean currents"],1,"The Earth's tilted axis and revolution cause seasons."],
+["What is the approximate tilt of Earth's axis?",["10.5°","23.5°","45°","66.5°"],1,"Earth's axis is tilted about 23.5 degrees from the perpendicular."],
+["When does the Northern Hemisphere experience summer?",["Around June","Around December","Around March","Around January"],0,"The Northern Hemisphere receives more direct sunlight around June."],
+["Which day is the longest in the Northern Hemisphere?",["21 March","21 June","23 September","22 December"],1,"Around 21 June is the summer solstice."],
+["What is an equinox?",["Longest day","Shortest day","Day and night nearly equal","No sunrise"],2,"During an equinox, day and night are nearly equal in length."],
+["When does the March equinox occur approximately?",["21 March","21 June","22 December","15 August"],0,"The March equinox occurs around 20 or 21 March."],
+["Which hemisphere has winter around December?",["Northern","Southern","Both have summer","Neither"],0,"The Northern Hemisphere experiences winter around December."],
+["What is the shape of Earth's orbit?",["Perfect circle","Elliptical","Square","Triangular"],1,"Earth's orbit is an ellipse."],
+["What is the main source of energy for Earth?",["Moon","Sun","Stars","Volcanoes"],1,"The Sun provides most of Earth's energy."],
+["What is the position of the Sun at the centre of our solar system?",["Correct","Incorrect","Only at night","Only in winter"],0,"The planets revolve around the Sun."],
+["What is the shortest day in the Northern Hemisphere approximately?",["21 June","22 December","21 March","23 September"],1,"The winter solstice around 22 December has the shortest daylight."],
+["What is the Earth's natural satellite?",["Mars","Moon","Venus","Sun"],1,"The Moon is Earth's natural satellite."],
+["Which movement causes day and night?",["Revolution","Rotation","Erosion","Tides"],1,"Rotation of Earth causes day and night."],
+["In which direction does Earth revolve around the Sun when viewed from above the North Pole?",["Clockwise","Anticlockwise","Northward","Southward"],1,"Earth revolves anticlockwise when viewed from above the North Pole."],
+["What is a leap year?",["360 days","364 days","366 days","365 days"],2,"A leap year has 366 days."],
+["Why do we have a leap year?",["To adjust the calendar","Because Earth stops","Because of the Moon","Because of tides"],0,"The extra day adjusts the calendar to Earth's orbital period."]
+]},
+{
+name:"Location on Earth's Surface",icon:"📍",color:"c2",
+q:[
+["What is the imaginary line around the middle of Earth called?",["Prime Meridian","Equator","Tropic of Cancer","Arctic Circle"],1,"The Equator divides Earth into Northern and Southern Hemispheres."],
+["What is latitude?",["Distance east or west","Angular distance north or south of Equator","Height above sea","Distance from Moon"],1,"Latitude measures position north or south of the Equator."],
+["What is longitude?",["Distance north or south","Angular distance east or west of Prime Meridian","Mountain height","Ocean depth"],1,"Longitude measures position east or west of the Prime Meridian."],
+["What is the latitude of the Equator?",["0°","23.5°","66.5°","90°"],0,"The Equator is at zero degrees latitude."],
+["What is the longitude of the Prime Meridian?",["90°","180°","0°","45°"],2,"The Prime Meridian is at zero degrees longitude."],
+["Through which place does the Prime Meridian pass?",["New Delhi","Greenwich","Tokyo","Kolkata"],1,"The Prime Meridian passes through Greenwich in London."],
+["What is the latitude of the Tropic of Cancer?",["23.5° North","23.5° South","66.5° North","0°"],0,"The Tropic of Cancer is approximately 23.5 degrees north."],
+["What is the latitude of the Tropic of Capricorn?",["23.5° North","23.5° South","66.5° South","0°"],1,"The Tropic of Capricorn is approximately 23.5 degrees south."],
+["How many degrees are there in a complete circle?",["90°","180°","270°","360°"],3,"A complete circle has 360 degrees."],
+["How many lines of latitude are there in total if every degree is counted?",["90","180","360","60"],1,"Latitude ranges from 90° south to 90° north."],
+["What divides Earth into Eastern and Western Hemispheres?",["Equator","Prime Meridian and 180° meridian","Tropic of Cancer","Arctic Circle"],1,"These meridians form the reference division between the hemispheres."],
+["What is the maximum latitude possible?",["45°","90°","180°","360°"],1,"Latitude reaches 90 degrees at the poles."],
+["Which latitude is the largest circle?",["Equator","Tropic of Cancer","Arctic Circle","North Pole"],0,"The Equator is the largest circle of latitude."],
+["What are lines of longitude also called?",["Parallels","Meridians","Contours","Isobars"],1,"Lines of longitude are called meridians."],
+["What are lines of latitude also called?",["Meridians","Parallels","Isobars","Contours"],1,"Lines of latitude are parallel to the Equator."],
+["How many degrees of longitude are there?",["90","180","360","270"],2,"Longitude is measured around the Earth through 360 degrees."],
+["What is the approximate time difference for 15° longitude?",["15 minutes","30 minutes","1 hour","2 hours"],2,"Earth rotates 15 degrees in approximately one hour."],
+["Which instrument helps find direction?",["Thermometer","Compass","Barometer","Rain gauge"],1,"A compass helps identify directions."],
+["What is the opposite of North?",["East","West","South","North-East"],2,"South is opposite to North."],
+["What is the approximate longitude of Indian Standard Time's reference meridian?",["0°","82.5° East","90° West","23.5° North"],1,"Indian Standard Time is based on 82.5 degrees east longitude."]
+]},
+{
+name:"Air Pressure",icon:"💨",color:"c3",
+q:[
+["What is air pressure?",["Weight of water","Force exerted by air","Heat of soil","Speed of river"],1,"Air exerts pressure on the Earth's surface."],
+["Which instrument measures air pressure?",["Thermometer","Barometer","Hygrometer","Anemometer"],1,"A barometer measures atmospheric pressure."],
+["Which gas is most abundant in the atmosphere?",["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],1,"Nitrogen makes up about 78% of the atmosphere."],
+["What happens to air pressure as altitude increases?",["Increases","Decreases","Remains same","Becomes zero immediately"],1,"Air pressure generally decreases with height."],
+["Which air is heavier?",["Warm air","Cold air","Both always equal","Water vapour"],1,"Cold air is denser than warm air."],
+["What is wind?",["Moving water","Moving air","Falling soil","Ocean floor"],1,"Wind is air moving from high to low pressure."],
+["From which pressure area does wind generally blow?",["Low to high","High to low","East to west only","Sea to land only"],1,"Air moves from higher pressure towards lower pressure."],
+["What is a sea breeze?",["Wind from land to sea","Wind from sea to land","Wind from mountain","Polar wind"],1,"During the day, cooler air often moves from sea towards land."],
+["What is a land breeze?",["Wind from sea to land","Wind from land to sea","Monsoon wind","Valley wind"],1,"At night, air often moves from cooler land towards the sea."],
+["What is the normal average sea-level atmospheric pressure?",["1013.25 millibars","500 millibars","2000 millibars","100 millibars"],0,"Standard sea-level pressure is about 1013.25 millibars."],
+["Which layer contains most of the weather phenomena?",["Troposphere","Stratosphere","Mesosphere","Thermosphere"],0,"Clouds and most weather occur in the troposphere."],
+["What is the blanket of air around Earth called?",["Hydrosphere","Atmosphere","Lithosphere","Biosphere"],1,"The atmosphere is the layer of gases surrounding Earth."],
+["What is a low-pressure area generally associated with?",["Rising air","Sinking air only","No air movement","Permanent ice"],0,"Air tends to rise in low-pressure areas."],
+["What is a high-pressure area generally associated with?",["Rising air","Sinking air","No gravity","Heavy rainfall always"],1,"Air tends to sink in high-pressure areas."],
+["Which factor affects air pressure?",["Altitude","Colour of soil","Shape of a leaf","Ocean salinity only"],0,"Altitude, temperature and humidity affect air pressure."],
+["What is a monsoon?",["Seasonal wind system","Permanent mountain","Ocean trench","Type of soil"],0,"Monsoon winds change direction seasonally."],
+["Which wind is associated with a tropical cyclone?",["Strong rotating wind","Only gentle breeze","Land breeze","Trade wind only"],0,"Cyclones are powerful rotating storm systems."],
+["Why does warm air rise?",["It becomes less dense","It becomes heavier","It turns into water","It loses all oxygen"],0,"Warm air expands and becomes less dense."],
+["Which gas is essential for human respiration?",["Nitrogen","Oxygen","Argon","Neon"],1,"Humans need oxygen for respiration."],
+["What is the main cause of wind?",["Differences in air pressure","Moonlight","Soil colour","Earthquakes"],0,"Unequal heating creates pressure differences that drive wind."]
+]},
+{
+name:"Landforms",icon:"⛰️",color:"c4",
+q:[
+["Which is the highest type of landform?",["Plain","Plateau","Mountain","Valley"],2,"Mountains are high elevated landforms."],
+["What is a plateau?",["Flat elevated land","Deep ocean","Narrow river","Low marsh"],0,"A plateau is an elevated area with a relatively flat top."],
+["What is a plain?",["High rocky peak","Broad flat or gently rolling land","Deep valley","Volcanic crater only"],1,"Plains are generally broad areas of low relief."],
+["Which force creates fold mountains?",["Wind erosion","Compression of Earth's crust","River deposition only","Rainfall"],1,"Compression can fold rock layers and form fold mountains."],
+["Which mountains are formed by volcanic activity?",["Volcanic mountains","Block mountains","Residual mountains","Fold mountains"],0,"Volcanic mountains form from erupted lava and other materials."],
+["What is a valley?",["Low area between hills or mountains","Flat ocean floor","Top of a mountain","Desert dune"],0,"A valley is a low area between higher lands."],
+["Which process breaks rocks into smaller pieces?",["Weathering","Condensation","Evaporation","Condensation"],0,"Weathering breaks down rocks in place."],
+["What is erosion?",["Wearing away and removal of material","Formation of clouds","Heating of air","Growth of forests"],0,"Erosion removes and transports weathered material."],
+["Which agent can shape desert landforms?",["Wind","Only glaciers","Only tides","Only earthquakes"],0,"Wind erosion and deposition shape many desert features."],
+["What is a sand dune?",["Hill of sand","River island","Snow mountain","Coral reef"],0,"Sand dunes are hills or ridges of wind-deposited sand."],
+["Which landform is commonly formed by river deposition at its mouth?",["Delta","Cirque","Moraine","Volcano"],0,"A delta forms when a river deposits sediments near its mouth."],
+["What is a glacier?",["Moving mass of ice","Hot desert wind","Underground river","Volcanic rock"],0,"A glacier is a large, slowly moving mass of ice."],
+["Which landform is formed by glacial erosion?",["U-shaped valley","Delta","Sand dune","Floodplain"],0,"Glaciers often carve U-shaped valleys."],
+["What is a gorge?",["Deep narrow valley","Wide plain","Flat plateau","Sand hill"],0,"A gorge is a deep, narrow valley with steep sides."],
+["What is a coastal cliff?",["Steep rock face beside sea","Desert dune","River island","Mountain glacier"],0,"Waves can erode coastlines to form cliffs."],
+["Which process deposits sediments?",["Deposition","Weathering","Earthquake","Folding"],0,"Deposition occurs when transported material is laid down."],
+["What is a residual mountain?",["Mountain left after long erosion","Mountain formed by coral","Mountain made only of ice","Mountain under sea"],0,"Harder rocks may remain standing after surrounding softer rocks erode."],
+["Which landform is often suitable for agriculture and settlement?",["Plain","Steep peak","Deep gorge","Active volcano"],0,"Many plains have fertile soils and are easier to build on."],
+["What is a rift valley?",["Long depression formed by faulting","Sand dune","River delta","Coral island"],0,"A rift valley can form when blocks of crust move apart along faults."],
+["Which agent is responsible for coastal erosion?",["Sea waves","Desert wind only","Glacier only","Volcanic ash"],0,"Sea waves wear away coastal rocks."]
+]},
+{
+name:"River",icon:"🏞️",color:"c5",
+q:[
+["Where does a river usually begin?",["Source","Mouth","Delta","Estuary"],0,"The source is the starting point of a river."],
+["Where does a river end?",["Source","Mouth","Waterfall","Tributary"],1,"A river usually ends in a sea, lake or another river."],
+["What is a tributary?",["Smaller river joining a larger river","River mouth","Ocean current","Waterfall"],0,"A tributary flows into a larger river."],
+["What is a distributary?",["Branch flowing away from main river","River source","Mountain spring","Underground lake"],0,"A distributary branches away from the main river, often in a delta."],
+["What is a river basin?",["Area drained by a river system","Only river mouth","Mountain peak","Ocean trench"],0,"A river basin is the area drained by a river and its tributaries."],
+["What is the process of wearing away river banks called?",["Erosion","Condensation","Freezing","Sublimation"],0,"River water erodes the bed and banks."],
+["What is a waterfall?",["Sudden vertical drop of river water","Flat river plain","Underground stream","Sea wave"],0,"A waterfall forms where river water drops from a height."],
+["What is a meander?",["Bend or curve in a river","River source","Waterfall","Mountain pass"],0,"A meander is a winding bend in a river channel."],
+["What is a floodplain?",["Flat land beside a river","Mountain summit","Ocean island","Desert plateau"],0,"Floodplains are formed by river deposits during floods."],
+["What is an oxbow lake?",["Lake formed from an abandoned river bend","Glacial lake only","Volcanic lake","Artificial pond"],0,"An abandoned meander can become an oxbow lake."],
+["What is a delta?",["Deposited land near river mouth","River source","Deep valley","Mountain range"],0,"A delta forms through sediment deposition at a river mouth."],
+["Which river is known as the longest river in India?",["Ganga","Yamuna","Damodar","Teesta"],0,"The Ganga is commonly identified as India's longest river within the country."],
+["Which river flows through Egypt?",["Nile","Amazon","Danube","Yangtze"],0,"The Nile flows through Egypt."],
+["Which river is associated with the largest drainage basin in the world?",["Amazon","Thames","Ravi","Narmada"],0,"The Amazon has the world's largest river drainage basin."],
+["What is the upper course of a river generally like?",["Steep gradient","Very flat gradient","No flow","Only tidal"],0,"The upper course often has steep slopes and fast-flowing water."],
+["What is the lower course of a river generally like?",["Gentle gradient","Very steep gradient","Always underground","No sediment"],0,"The lower course usually has a gentler slope and more deposition."],
+["What is an estuary?",["Tidal river mouth where fresh and salt water mix","Mountain lake","River source","Waterfall"],0,"An estuary is a tidal mouth where river water meets the sea."],
+["What is the main source of water for many rivers?",["Rain and melting snow","Only seawater","Only groundwater","Volcanic lava"],0,"Rainfall and melting snow or ice feed many rivers."],
+["What is a watershed?",["High land separating drainage basins","River delta","Waterfall pool","Ocean current"],0,"A watershed divides neighbouring drainage basins."],
+["What is river pollution commonly caused by?",["Untreated sewage and waste","Clean rainwater","Natural sunlight","Fresh air"],0,"Untreated sewage and industrial waste can pollute rivers."]
+]},
+{
+name:"Rock and Soil",icon:"🪨",color:"c6",
+q:[
+["What is the solid outer part of Earth made of?",["Rocks","Clouds","Water vapour","Air"],0,"The Earth's crust is made of rocks and minerals."],
+["Which rock forms from cooled magma or lava?",["Igneous","Sedimentary","Metamorphic","Organic"],0,"Igneous rocks form when molten material cools and solidifies."],
+["Which rock forms from layers of sediments?",["Igneous","Sedimentary","Metamorphic","Volcanic glass only"],1,"Sedimentary rocks form from deposited sediments."],
+["Which rock is formed by heat and pressure?",["Metamorphic","Sedimentary","Igneous","Loose soil"],0,"Metamorphic rocks form when existing rocks change under heat and pressure."],
+["Which is an example of an igneous rock?",["Granite","Sandstone","Limestone","Marble"],0,"Granite is an intrusive igneous rock."],
+["Which is an example of a sedimentary rock?",["Sandstone","Granite","Basalt","Gneiss"],0,"Sandstone forms from compacted sand grains."],
+["Which is an example of a metamorphic rock?",["Marble","Basalt","Sandstone","Pumice"],0,"Marble forms when limestone is metamorphosed."],
+["What is magma?",["Molten rock beneath Earth's surface","Frozen water","River sediment","Soil layer"],0,"Magma is molten rock below the Earth's surface."],
+["What is lava?",["Magma that reaches Earth's surface","Underground water","A type of soil","A mineral"],0,"Molten rock at the surface is called lava."],
+["What is soil?",["Upper loose layer of Earth's surface","Only solid bedrock","Ocean water","Atmospheric gas"],0,"Soil is the upper layer containing mineral particles and organic matter."],
+["Which component makes soil fertile?",["Humus","Plastic","Glass","Metal waste"],0,"Humus is decayed organic matter that improves soil fertility."],
+["What is humus?",["Decomposed organic matter","Pure sand","Molten rock","Salt water"],0,"Humus forms from decomposed plant and animal remains."],
+["Which soil has the largest particles?",["Sandy soil","Clayey soil","Silty soil","Peaty soil"],0,"Sand has relatively large particles."],
+["Which soil holds the most water generally?",["Clayey soil","Sandy soil","Gravel","Coarse sand"],0,"Clay has very fine particles and holds considerable water."],
+["Which soil is generally best for many crops?",["Loamy soil","Pure gravel","Pure sand","Hard rock"],0,"Loam is a balanced mixture of sand, silt and clay."],
+["What is soil erosion?",["Removal of topsoil","Formation of humus","Growth of roots","Addition of compost"],0,"Soil erosion removes fertile topsoil through wind or water."],
+["Which practice helps prevent soil erosion?",["Planting trees","Deforestation","Overgrazing","Leaving soil bare"],0,"Tree roots help hold soil together."],
+["Which mineral is essential for making steel?",["Iron ore","Quartz","Gypsum","Mica"],0,"Iron ore is the main source of iron for steel production."],
+["What is the rock cycle?",["Continuous transformation of rocks","Daily rotation of Earth","Movement of rivers only","Formation of clouds"],0,"Rocks can change from one type to another through geological processes."],
+["Which rock is commonly used in construction?",["Granite","Soft peat","Loose clay","Pure humus"],0,"Granite is a strong rock widely used in construction."]
+]},
+{
+name:"Water Pollution",icon:"💧",color:"c7",
+q:[
+["What is water pollution?",["Contamination of water","Purification of water","Water evaporation","Rainfall"],0,"Water pollution makes water harmful or unsuitable for use."],
+["Which is a major source of water pollution?",["Untreated sewage","Clean rain","Fresh air","Sunlight"],0,"Untreated sewage adds harmful substances and germs to water."],
+["Which waste can cause industrial water pollution?",["Chemical effluents","Clean sand","Pure oxygen","Fresh leaves only"],0,"Industrial chemicals can contaminate rivers and lakes."],
+["What does potable water mean?",["Water safe to drink","Saltwater","Polluted water","Water for factories only"],0,"Potable water is suitable for drinking."],
+["Which disease can spread through contaminated water?",["Cholera","Malaria only","Scurvy","Night blindness"],0,"Cholera can spread through water contaminated with bacteria."],
+["Which method helps make water safer by killing many germs?",["Boiling","Adding mud","Adding waste","Leaving it uncovered"],0,"Boiling can kill many disease-causing microorganisms."],
+["What is eutrophication?",["Excess nutrient enrichment of water","Freezing of rivers","Formation of mountains","Water evaporation"],0,"Excess nutrients can cause algal growth and reduce oxygen in water."],
+["Which substances often cause eutrophication?",["Nitrates and phosphates","Pure oxygen","Clean sand","Iron nails only"],0,"Fertilisers containing nitrates and phosphates can enter water bodies."],
+["What is an oil spill?",["Release of oil into water","Rainwater harvesting","Water filtration","River deposition"],0,"Oil spills contaminate water and harm aquatic life."],
+["Which organisms are most directly affected by polluted water?",["Aquatic organisms","Desert rocks","Mountain peaks","Clouds"],0,"Fish and other aquatic organisms can be harmed by pollutants."],
+["What is the main purpose of wastewater treatment?",["Remove pollutants","Add more chemicals","Increase plastic waste","Make seawater"],0,"Treatment reduces harmful contaminants before water is released or reused."],
+["Which practice helps reduce water pollution?",["Treating sewage","Dumping garbage in rivers","Washing chemicals into drains","Throwing plastic into ponds"],0,"Treating sewage prevents untreated waste from entering water bodies."],
+["What is biodegradable waste?",["Waste that microorganisms can break down","Plastic that never breaks down","Metal waste only","Radioactive waste"],0,"Biodegradable materials can decompose naturally."],
+["Which is a non-biodegradable pollutant?",["Plastic","Fruit peel","Dry leaves","Paper"],0,"Plastic can persist in the environment for a long time."],
+["Why is dissolved oxygen important in water?",["Aquatic organisms need it","It makes water salty","It creates plastic","It causes soil erosion"],0,"Many aquatic organisms need dissolved oxygen to survive."],
+["Which water source is often contaminated by agricultural runoff?",["Ponds and rivers","Clouds","Glaciers only","Pure distilled water"],0,"Fertilisers and pesticides can wash into nearby water bodies."],
+["What is groundwater?",["Water stored beneath Earth's surface","Water in clouds","Sea ice","Water vapour"],0,"Groundwater is stored in soil and rock spaces below ground."],
+["Which action saves freshwater?",["Repairing leaking taps","Keeping taps running","Dumping waste","Washing vehicles with hoses continuously"],0,"Repairing leaks prevents unnecessary water loss."],
+["What is rainwater harvesting?",["Collecting and storing rainwater","Polluting rivers","Removing forests","Making seawater"],0,"Rainwater harvesting collects rain for later use or groundwater recharge."],
+["Who should help prevent water pollution?",["Everyone","Only fishermen","Only farmers","Only tourists"],0,"Individuals, industries and governments all have a role."]
+]},
+{
+name:"Soil Pollution",icon:"🌱",color:"c8",
+q:[
+["What is soil pollution?",["Contamination of soil by harmful substances","Formation of soil","Plant growth","Rainfall"],0,"Soil pollution occurs when harmful substances contaminate soil."],
+["Which chemical can pollute soil?",["Pesticide","Clean water","Humus","Oxygen"],0,"Excessive pesticide use can contaminate soil."],
+["Which waste is especially harmful to soil?",["Industrial toxic waste","Dry leaves","Compost","Clean sand"],0,"Toxic industrial waste can introduce harmful chemicals into soil."],
+["What is a pesticide?",["Substance used to control pests","Natural rainfall","A type of rock","A soil layer"],0,"Pesticides are used to control insects and other pests."],
+["What is excessive use of chemical fertilisers likely to do?",["Damage soil quality","Always improve soil forever","Create forests","Stop all erosion"],0,"Overuse can disturb soil chemistry and harm soil organisms."],
+["Which practice improves soil naturally?",["Composting","Dumping plastic","Burning all vegetation","Pouring oil"],0,"Compost adds organic matter and nutrients to soil."],
+["What is compost?",["Decomposed organic waste","Plastic powder","Industrial oil","Metal dust"],0,"Compost is made from decomposed organic materials."],
+["Which waste takes a very long time to decompose?",["Plastic","Vegetable peel","Dry grass","Leaves"],0,"Most conventional plastics persist for a long time."],
+["What is one effect of soil pollution on crops?",["Reduced growth","Guaranteed higher yield","No change ever","Instant forest growth"],0,"Pollutants can harm roots and reduce crop growth."],
+["How can heavy metals enter soil?",["Industrial waste","Clean rain only","Sunlight","Wind-free air"],0,"Industrial activities can release heavy metals into soil."],
+["Which activity can cause soil pollution?",["Improper disposal of batteries","Planting trees","Composting","Crop rotation"],0,"Batteries may contain harmful metals and chemicals."],
+["What is crop rotation?",["Growing different crops in sequence","Growing one crop forever","Removing all soil","Burning farmland"],0,"Crop rotation helps maintain soil health."],
+["How does afforestation help soil?",["Roots bind the soil","It increases plastic","It removes all humus","It creates toxic waste"],0,"Tree roots hold soil and reduce erosion."],
+["What is organic farming?",["Farming using natural methods and inputs","Using only toxic chemicals","Dumping factory waste","Growing crops without soil"],0,"Organic farming relies on natural inputs and ecological methods."],
+["Which is a harmful effect of soil pollution on groundwater?",["Pollutants may seep underground","It always purifies water","It creates rainfall","It stops evaporation"],0,"Some pollutants can leach into groundwater."],
+["Which material is suitable for composting?",["Vegetable peels","Plastic bags","Glass bottles","Metal cans"],0,"Vegetable peels decompose and can be composted."],
+["What does the 3R principle stand for?",["Reduce, Reuse, Recycle","Read, Run, Rest","Rain, River, Rock","Remove, Release, Return"],0,"The 3Rs reduce waste and pollution."],
+["Which action reduces soil pollution?",["Proper waste disposal","Open dumping of chemicals","Excessive pesticide use","Burning plastic"],0,"Safe disposal prevents harmful substances from entering soil."],
+["Why are earthworms useful to soil?",["They improve soil structure","They create plastic","They remove all nutrients","They pollute groundwater"],0,"Earthworms help mix and aerate soil."],
+["What is the best way to manage biodegradable kitchen waste?",["Composting","Dumping in rivers","Burning plastic with it","Leaving it on roads"],0,"Kitchen waste can be converted into useful compost."]
+]},
+{
+name:"Continent of Asia",icon:"🌏",color:"c9",
+q:[
+["Which is the largest continent?",["Africa","Asia","Europe","Australia"],1,"Asia is the largest continent by area."],
+["Which is the highest mountain peak in Asia?",["Mount Everest","K2","Kanchenjunga","Nanda Devi"],0,"Mount Everest is the highest peak in the world."],
+["In which mountain range is Mount Everest located?",["Himalayas","Alps","Andes","Atlas"],0,"Mount Everest is part of the Himalayan range."],
+["Which is the largest country in Asia by area?",["India","China","Russia","Japan"],2,"Russia extends across Europe and Asia and is the largest country by total area."],
+["Which ocean lies south of Asia?",["Indian Ocean","Arctic Ocean","Atlantic Ocean","Southern Ocean"],0,"The Indian Ocean lies to the south of Asia."],
+["Which desert is located in Mongolia and China?",["Gobi","Sahara","Kalahari","Atacama"],0,"The Gobi Desert lies in Mongolia and northern China."],
+["Which is a major river of China?",["Yangtze","Nile","Thames","Danube"],0,"The Yangtze is a major river in China."],
+["Which country is known as the Land of the Rising Sun?",["Japan","India","Nepal","Thailand"],0,"Japan is popularly known as the Land of the Rising Sun."],
+["Which is the largest peninsula in Asia?",["Arabian Peninsula","Indian Peninsula","Korean Peninsula","Malay Peninsula"],0,"The Arabian Peninsula is the largest peninsula in Asia."],
+["Which country is famous for the Taj Mahal?",["India","China","Japan","Iran"],0,"The Taj Mahal is located in Agra, India."],
+["Which mountain range separates much of Europe from Asia?",["Ural Mountains","Andes","Rockies","Atlas"],0,"The Ural Mountains are a traditional boundary between Europe and Asia."],
+["Which is a landlocked country in Asia?",["Nepal","Japan","Sri Lanka","Philippines"],0,"Nepal is surrounded by land and has no coastline."],
+["Which sea lies between India and the Arabian Peninsula?",["Arabian Sea","Baltic Sea","Black Sea","North Sea"],0,"The Arabian Sea lies to the west of India."],
+["Which island country lies east of China and Korea?",["Japan","Nepal","Bhutan","Afghanistan"],0,"Japan is an island country in East Asia."],
+["Which is the highest plateau in the world?",["Tibetan Plateau","Deccan Plateau","Colorado Plateau","Brazilian Plateau"],0,"The Tibetan Plateau is the world's highest and largest plateau."],
+["Which river flows through Bangladesh and India?",["Ganga","Thames","Rhine","Volga"],0,"The Ganga flows through India and Bangladesh."],
+["Which country has the capital Tokyo?",["Japan","China","South Korea","Thailand"],0,"Tokyo is the capital of Japan."],
+["Which is a major oil-producing region of Asia?",["Southwest Asia","Central Siberia only","Himalayas","Japan"],0,"Southwest Asia includes many major petroleum-producing countries."],
+["Which climate is common in much of South and Southeast Asia?",["Monsoon climate","Polar climate","Tundra climate","Mediterranean only"],0,"Seasonal monsoon winds bring rainfall to much of the region."],
+["Which country is located in South Asia?",["Bangladesh","Germany","Egypt","Brazil"],0,"Bangladesh is a South Asian country."]
+]},
+{
+name:"Continent of Africa",icon:"🦁",color:"c10",
+q:[
+["Which is the second-largest continent?",["Africa","Europe","Australia","Antarctica"],0,"Africa is the second-largest continent by area."],
+["Which is the largest hot desert in the world?",["Sahara","Gobi","Kalahari","Thar"],0,"The Sahara is the largest hot desert."],
+["Which river is strongly associated with Egypt?",["Nile","Amazon","Yangtze","Danube"],0,"The Nile flows through Egypt and supports agriculture."],
+["Which is the highest mountain in Africa?",["Mount Kilimanjaro","Mount Kenya","Atlas","Drakensberg"],0,"Mount Kilimanjaro is Africa's highest mountain."],
+["Which ocean lies to the east of Africa?",["Indian Ocean","Pacific Ocean","Arctic Ocean","Southern Ocean"],0,"The Indian Ocean lies to the east of Africa."],
+["Which ocean lies to the west of Africa?",["Atlantic Ocean","Indian Ocean","Pacific Ocean","Arctic Ocean"],0,"The Atlantic Ocean lies to the west of Africa."],
+["Which imaginary line passes through central Africa?",["Equator","Prime Meridian only","Tropic of Capricorn only","Arctic Circle"],0,"The Equator crosses the African continent."],
+["Which is a major grassland region of Africa?",["Savanna","Tundra","Taiga","Prairie only"],0,"Savannas are tropical grasslands with scattered trees."],
+["Which desert is in southern Africa?",["Kalahari","Sahara","Gobi","Thar"],0,"The Kalahari is a large semi-arid sandy region in southern Africa."],
+["Which is the largest lake in Africa by surface area?",["Lake Victoria","Lake Chad","Lake Tanganyika","Lake Malawi"],0,"Lake Victoria is Africa's largest lake by surface area."],
+["Which is a famous waterfall on the Zambezi River?",["Victoria Falls","Niagara Falls","Angel Falls","Iguazu Falls"],0,"Victoria Falls is on the Zambezi River."],
+["Which country has Nairobi as its capital?",["Kenya","Egypt","Nigeria","Ghana"],0,"Nairobi is the capital of Kenya."],
+["Which country has Cairo as its capital?",["Egypt","Kenya","Morocco","Ethiopia"],0,"Cairo is the capital of Egypt."],
+["Which sea lies to the north of Africa?",["Mediterranean Sea","Arabian Sea","Baltic Sea","South China Sea"],0,"The Mediterranean Sea lies north of Africa."],
+["Which is an important crop grown in parts of West Africa?",["Cocoa","Wheat only","Apples only","Olives only"],0,"West African countries are important cocoa producers."],
+["Which is a major oil-producing country in Africa?",["Nigeria","Nepal","Japan","Sweden"],0,"Nigeria is a major petroleum producer in Africa."],
+["What type of climate is found around the Equator in Africa?",["Equatorial climate","Polar climate","Tundra climate","Desert everywhere"],0,"Equatorial areas are generally hot and wet throughout the year."],
+["Which narrow waterway separates Africa from Europe?",["Strait of Gibraltar","Bering Strait","Palk Strait","Malacca Strait"],0,"The Strait of Gibraltar separates northwestern Africa from Europe."],
+["Which animal is commonly associated with African savannas?",["Giraffe","Polar bear","Penguin","Yak"],0,"Giraffes are characteristic animals of African savanna ecosystems."],
+["Which is the southernmost country on mainland Africa?",["South Africa","Egypt","Algeria","Libya"],0,"South Africa occupies the southern part of the African mainland."]
+]},
+{
+name:"Continent of Europe",icon:"🏰",color:"c11",
+q:[
+["Which continent is called the second-smallest continent?",["Europe","Asia","Africa","North America"],0,"Europe is the second-smallest continent by area."],
+["Which mountain range is a traditional boundary between Europe and Asia?",["Ural Mountains","Himalayas","Andes","Atlas"],0,"The Ural Mountains traditionally mark part of the boundary."],
+["Which is the longest river in Europe?",["Volga","Thames","Seine","Rhine"],0,"The Volga is the longest river in Europe."],
+["Which is the highest mountain in Europe commonly recognised geographically?",["Mount Elbrus","Mont Blanc","Matterhorn","Ben Nevis"],0,"Mount Elbrus in the Caucasus is commonly regarded as Europe's highest peak."],
+["Which ocean lies to the west of Europe?",["Atlantic Ocean","Indian Ocean","Pacific Ocean","Southern Ocean"],0,"The Atlantic Ocean lies to the west of Europe."],
+["Which sea lies between Europe and Africa?",["Mediterranean Sea","Baltic Sea","North Sea","Caspian Sea"],0,"The Mediterranean Sea separates much of Europe from Africa."],
+["Which country has Paris as its capital?",["France","Italy","Germany","Spain"],0,"Paris is the capital of France."],
+["Which country has London as its capital?",["United Kingdom","France","Germany","Greece"],0,"London is the capital of the United Kingdom."],
+["Which country has Rome as its capital?",["Italy","Spain","Portugal","Norway"],0,"Rome is the capital of Italy."],
+["Which country has Berlin as its capital?",["Germany","Austria","Poland","Belgium"],0,"Berlin is the capital of Germany."],
+["Which is a major mountain range in central Europe?",["Alps","Andes","Himalayas","Rockies"],0,"The Alps extend across several central European countries."],
+["Which climate is found around the Mediterranean Sea?",["Mediterranean climate","Polar climate","Tundra climate","Equatorial climate"],0,"Mediterranean climates have dry summers and mild, wet winters."],
+["Which river flows through London?",["Thames","Rhine","Volga","Danube"],0,"The River Thames flows through London."],
+["Which river flows through Paris?",["Seine","Thames","Volga","Po"],0,"The Seine flows through Paris."],
+["Which country is famous for its fjords?",["Norway","Spain","Hungary","Greece"],0,"Norway is famous for its deep glacial fjords."],
+["Which is a major industrial country in Europe?",["Germany","Nepal","Bhutan","Maldives"],0,"Germany is one of Europe's major industrial economies."],
+["Which sea lies north of Europe?",["Arctic Ocean and adjoining Arctic seas","Arabian Sea","Coral Sea","South China Sea"],0,"The Arctic Ocean borders northern Europe."],
+["Which is the smallest independent country in the world, located in Europe?",["Vatican City","Monaco","Malta","Luxembourg"],0,"Vatican City is the world's smallest independent state by area."],
+["Which country is shaped like a boot?",["Italy","France","Germany","Sweden"],0,"The Italian Peninsula is commonly described as boot-shaped."],
+["Which is the largest country entirely in Europe by area?",["Ukraine","France","Spain","Portugal"],0,"Ukraine is the largest country entirely within Europe."]
+]}
+];
 
-    <!-- ==================== 2. CHAPTER SELECTION SCREEN ==================== -->
-    <main id="screen-chapters" class="screen">
-      <div class="section-banner banner-chapters">
-        <h2>Select a Chapter</h2>
-        <p>Based on WBBSE Class 7 Textbook (<em>Amader Prithibi</em>)</p>
-      </div>
-      <div class="chapters-list" id="chapters-container">
-        <!-- Populated dynamically by script.js -->
-      </div>
-    </main>
+// App state
+let currentChapter=0;
+let currentQuestion=0;
+let score=0;
+let answered=false;
 
-    <!-- ==================== 3. QUIZ SCREEN ==================== -->
-    <main id="screen-quiz" class="screen">
-      <!-- Quiz Top Meta Bar -->
-      <div class="quiz-meta-bar">
-        <div class="quiz-badge-group">
-          <span class="quiz-mode-pill" id="quiz-mode-label">Chapter 1</span>
-          <span class="quiz-counter" id="quiz-question-counter">Q 1 / 15</span>
-        </div>
-        <div class="quiz-timer" id="quiz-timer">
-          <span>⏱️</span>
-          <span id="timer-display">00:00</span>
-        </div>
-      </div>
+const home=document.getElementById("home");
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
 
-      <!-- Progress Bar -->
-      <div class="progress-track">
-        <div class="progress-fill" id="quiz-progress-bar" style="width: 0%;"></div>
-      </div>
+function showScreen(screen){
+home.style.display="none";
+quiz.style.display="none";
+result.style.display="none";
+screen.style.display="block";
+window.scrollTo(0,0);
+}
 
-      <!-- Dynamic Colorful Question Card -->
-      <div class="question-card theme-0" id="question-card">
-        <div class="question-card-header">
-          <span class="q-chip" id="q-chapter-tag">The Earth's Revolution</span>
-          <span class="q-status-badge" id="q-answered-badge">Unanswered</span>
-        </div>
-        <h2 class="question-text" id="question-text">Loading question...</h2>
-      </div>
+function buildChapters(){
+const list=document.getElementById("chapterList");
+list.innerHTML="";
+chapters.forEach((ch,i)=>{
+const btn=document.createElement("button");
+btn.className="chapter "+ch.color;
+btn.innerHTML=`<span style="font-size:27px">${ch.icon}</span>
+<strong>${i+1}. ${ch.name}</strong>
+<small>20 MCQs • Start Practice →</small>`;
+btn.onclick=()=>startQuiz(i);
+list.appendChild(btn);
+});
+}
 
-      <!-- Options List (A, B, C, D) -->
-      <div class="options-container" id="options-container">
-        <!-- Buttons injected dynamically -->
-      </div>
+function startQuiz(index){
+currentChapter=index;
+currentQuestion=0;
+score=0;
+showScreen(quiz);
+renderQuestion();
+}
 
-      <!-- Immediate Feedback & Explanation Box -->
-      <div class="explanation-card hidden" id="explanation-card">
-        <div class="exp-header" id="exp-header">
-          <span class="exp-icon" id="exp-icon">✅</span>
-          <span class="exp-title" id="exp-title">Correct Answer!</span>
-        </div>
-        <p class="exp-text" id="exp-text"></p>
-      </div>
+function renderQuestion(){
+answered=false;
+const ch=chapters[currentChapter];
+const q=ch.q[currentQuestion];
+document.getElementById("chapterName").textContent=ch.icon+" "+ch.name;
+document.getElementById("qnumber").textContent=`QUESTION ${currentQuestion+1} OF ${ch.q.length}`;
+document.getElementById("question").textContent=q[0];
+document.getElementById("scoreDisplay").textContent="⭐ Score: "+score;
+document.getElementById("progressBar").style.width=(currentQuestion/ch.q.length*100)+"%";
 
-      <!-- Quiz Bottom Navigation -->
-      <div class="quiz-nav-footer">
-        <button class="btn-nav btn-prev" id="btn-prev-q">
-          ← Previous
-        </button>
-        <button class="btn-nav btn-next" id="btn-next-q">
-          Next Question →
-        </button>
-      </div>
-    </main>
+const options=document.getElementById("options");
+options.innerHTML="";
+q[1].forEach((option,i)=>{
+const btn=document.createElement("button");
+btn.className="option";
+btn.innerHTML=`<b>${String.fromCharCode(65+i)}.</b> ${option}`;
+btn.onclick=()=>selectAnswer(i);
+options.appendChild(btn);
+});
 
-    <!-- ==================== 4. RESULTS SCREEN ==================== -->
-    <main id="screen-results" class="screen">
-      <div class="result-hero-card">
-        <div class="stars-display" id="result-stars">⭐⭐⭐</div>
-        <h2 class="result-heading" id="result-title">Outstanding Work!</h2>
-        <p class="result-subtitle" id="result-motivation">You have mastered this Geography topic!</p>
+const feedback=document.getElementById("feedback");
+feedback.className="feedback";
+feedback.style.display="none";
+document.getElementById("nextBtn").style.display="none";
+}
 
-        <!-- Circular Percentage Score -->
-        <div class="score-ring-wrap">
-          <svg class="score-ring" viewBox="0 0 120 120">
-            <circle class="ring-bg" cx="60" cy="60" r="50" />
-            <circle class="ring-progress" id="result-ring-circle" cx="60" cy="60" r="50" />
-          </svg>
-          <div class="score-ring-text">
-            <span class="score-percent" id="result-percentage">0%</span>
-            <span class="score-label">Score</span>
-          </div>
-        </div>
+function selectAnswer(index){
+if(answered)return;
+answered=true;
+const q=chapters[currentChapter].q[currentQuestion];
+const correct=q[2];
+const buttons=document.querySelectorAll(".option");
 
-        <!-- 4 Metric Boxes -->
-        <div class="result-metrics-grid">
-          <div class="metric-box metric-total">
-            <span class="m-icon">📋</span>
-            <span class="m-val" id="res-total">0</span>
-            <span class="m-lbl">Total Questions</span>
-          </div>
-          <div class="metric-box metric-correct">
-            <span class="m-icon">✅</span>
-            <span class="m-val" id="res-correct">0</span>
-            <span class="m-lbl">Correct Answers</span>
-          </div>
-          <div class="metric-box metric-wrong">
-            <span class="m-icon">❌</span>
-            <span class="m-val" id="res-wrong">0</span>
-            <span class="m-lbl">Wrong Answers</span>
-          </div>
-          <div class="metric-box metric-time">
-            <span class="m-icon">⏱️</span>
-            <span class="m-val" id="res-time">00:00</span>
-            <span class="m-lbl">Time Taken</span>
-          </div>
-        </div>
+buttons.forEach((btn,i)=>{
+btn.disabled=true;
+if(i===correct)btn.classList.add("correct");
+if(i===index && i!==correct)btn.classList.add("wrong");
+});
 
-        <div class="result-actions">
-          <button class="btn-action btn-retry" id="btn-retry-quiz">
-            🔄 Retry Quiz
-          </button>
-          <button class="btn-action btn-home" id="btn-result-home">
-            🏠 Back to Home
-          </button>
-        </div>
-      </div>
-    </main>
+const feedback=document.getElementById("feedback");
+feedback.style.display="block";
 
-    <!-- ==================== 5. MY PROGRESS SCREEN ==================== -->
-    <main id="screen-progress" class="screen">
-      <div class="section-banner banner-progress">
-        <h2>My Learning Progress</h2>
-        <p>Track your scores across all 11 WBBSE Geography chapters</p>
-      </div>
+if(index===correct){
+score++;
+feedback.className="feedback good";
+document.getElementById("feedbackTitle").textContent="✓ Excellent! Correct Answer!";
+}else{
+feedback.className="feedback bad";
+document.getElementById("feedbackTitle").textContent="✗ Incorrect Answer";
+}
 
-      <div class="overall-progress-card">
-        <div class="op-row">
-          <div>
-            <span class="op-label">Total Questions Answered</span>
-            <h3 class="op-big" id="prog-total-answered">0</h3>
-          </div>
-          <div>
-            <span class="op-label">Mock Test Best</span>
-            <h3 class="op-big" id="prog-mock-best">N/A</h3>
-          </div>
-        </div>
-      </div>
+document.getElementById("explanation").textContent=
+"Correct answer: "+q[1][correct]+". "+q[3];
 
-      <h3 class="sub-section-title">Chapter-wise Best Scores</h3>
-      <div class="progress-chapters-list" id="progress-chapters-list">
-        <!-- Populated dynamically -->
-      </div>
+document.getElementById("scoreDisplay").textContent="⭐ Score: "+score;
+document.getElementById("nextBtn").style.display="block";
+document.getElementById("nextBtn").textContent=
+currentQuestion===19?"See Final Result 🏆":"Next Question →";
+}
 
-      <button class="btn-danger-outline" id="btn-reset-progress">
-        🗑️ Reset All Saved Progress
-      </button>
-    </main>
+function nextQuestion(){
+if(!answered)return;
+if(currentQuestion<19){
+currentQuestion++;
+renderQuestion();
+}else{
+showResult();
+}
+}
 
-    <!-- ==================== 6. ABOUT APP SCREEN ==================== -->
-    <main id="screen-about" class="screen">
-      <div class="about-card">
-        <div class="about-badge">WBBSE Educational App</div>
-        <h2>About WBBSE Class 7 Geography Quiz</h2>
-        <p>
-          This interactive quiz application is crafted specifically for <strong>Class 7 students of the West Bengal Board of Secondary Education (WBBSE)</strong> studying Geography in English medium.
-        </p>
+function showResult(){
+showScreen(result);
+const total=chapters[currentChapter].q.length;
+const percent=Math.round(score/total*100);
+document.getElementById("resultChapter").textContent=chapters[currentChapter].name;
+document.getElementById("finalScore").textContent=score+"/"+total;
+document.getElementById("resultPercent").textContent="Your accuracy: "+percent+"%";
+let message="Keep Practising! 💪";
+if(percent===100)message="Perfect Score! Geography Champion! 🏆";
+else if(percent>=80)message="Excellent Work! 🌟";
+else if(percent>=60)message="Very Good! 👏";
+else if(percent>=40)message="Good Try! Keep Learning! 😊";
+document.getElementById("resultMessage").textContent=message;
+document.getElementById("progressBar").style.width="100%";
+}
 
-        <div class="about-feature-box">
-          <h4>📖 Syllabus Coverage (11 Chapters)</h4>
-          <ul class="syllabus-list">
-            <li>1. The Earth's Revolution</li>
-            <li>2. Determination of Location of a Place on the Earth's Surface</li>
-            <li>3. Air Pressure</li>
-            <li>4. Landforms</li>
-            <li>5. River</li>
-            <li>6. Rocks and Soil</li>
-            <li>7. Water Pollution</li>
-            <li>8. Soil Pollution</li>
-            <li>9. Continent of Asia</li>
-            <li>10. Continent of Africa</li>
-            <li>11. Continent of Europe</li>
-          </ul>
-        </div>
+function restartQuiz(){
+startQuiz(currentChapter);
+}
 
-        <div class="about-feature-box">
-          <h4>✨ Key App Features</h4>
-          <p>• 210+ original syllabus-aligned MCQs with clear explanations.<br>
-             • Chapter-wise practice, 30-question Mock Tests, and Daily Challenges.<br>
-             • Works 100% offline once installed on Android or Desktop.<br>
-             • Automatic progress tracking stored locally on your device.</p>
-        </div>
+function goHome(){
+showScreen(home);
+}
 
-        <button class="btn-primary-hero" id="btn-about-home" style="margin-top: 16px;">
-          🏠 Back to Home Screen
-        </button>
-      </div>
-    </main>
-  </div>
-
-  <script src="script.js"></script>
+buildChapters();
+</script>
 </body>
 </html>
